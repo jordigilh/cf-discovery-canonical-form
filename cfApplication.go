@@ -50,6 +50,7 @@ type Service struct {
 	Name string `json:"name"`
 	// Parameters contain the k/v relationship for the aplication to connect to the service
 	Parameters map[string]interface{} `json:"parameters,omitempty"`
+	// Tag
 }
 
 // Processes represents a slice of Processes
