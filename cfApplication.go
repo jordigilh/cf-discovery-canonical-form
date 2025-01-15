@@ -63,7 +63,6 @@ type Service struct {
 	Name string `json:"name"`
 	// Parameters contain the k/v relationship for the aplication to bind to the service
 	Parameters map[string]interface{} `json:"parameters,omitempty"`
-	// Tag
 }
 
 // Processes represents a slice of Processes.
@@ -83,7 +82,7 @@ type Process struct {
 	// HealthCheck captures the health check information
 	HealthCheck Probe `json:"healthCheck"`
 	// ReadinessCheck captures the readiness check information.
-	ReadinessCheck ReadinessProbe `json:"readinessCheck"`
+	ReadinessCheck Probe `json:"readinessCheck"`
 	// Command represents the command used to run the process.
 	Command []string `json:"command,omitempty"`
 	// Replicas represents the number of instances for this process to run.
@@ -101,15 +100,8 @@ type Probe struct {
 	// Endpoint represents the URL location where to perform the probe check.
 	Endpoint string `json:"endpoint"`
 	// Timeout represents the number of seconds in which the probe check can be considered as timedout.
+	// https://docs.cloudfoundry.org/devguide/deploy-apps/manifest-attributes.html#timeout
 	Timeout uint `json:"timeout"`
 	// Interval represents the number of seconds between probe checks.
 	Interval uint `json:"interval"`
-}
-
-type ReadinessProbe struct {
-	Probe `json:",inline"`
-	// InitialDelay represents the time in seconds to wait until the first readiness check is triggered.
-	// In Cloud Foundry, this value maps to the application or process `timeout` field.
-	// For more information check https://docs.cloudfoundry.org/devguide/deploy-apps/manifest-attributes.html#timeout
-	InitialDelay uint `json:"initialDelay"`
 }
