@@ -3,11 +3,14 @@ package main
 // Application represents an interpretation of a runtime Cloud Foundry application. This structure differs in that
 // the information it contains has been processed to simplify its transformation to a Kubernetes manifest using MTA
 type Application struct {
-	Metadata  Metadata          `json:",inline"`
-	Env       map[string]string `json:"env,omitempty"`
-	Services  Services          `json:"services,omitempty"`
-	Processes Processes         `json:"processes,omitempty"`
-
+	Metadata Metadata `json:",inline"`
+	// Env captures the `env` field values in the CF application manifest.
+	Env map[string]string `json:"env,omitempty"`
+	// Services captures the `services` field values in the CF application manifest.
+	Services Services `json:"services,omitempty"`
+	// Processes captures the `processes` field values in the CF application manifest.
+	Processes Processes `json:"processes,omitempty"`
+	// Sidecars captures the `sidecars` field values in the CF application manifest.
 	Sidecars Processes `json:"sidecars,omitempty"`
 	// Instances configures the number of Cloud Foundry application instances.
 	Instances uint `json:"instances"`
@@ -18,8 +21,11 @@ type Application struct {
 
 // Metadata captures the name, labels and annotations in the application
 type Metadata struct {
-	Name        string            `json:"name"`
-	Labels      map[string]string `json:"labels,omitempty"`
+	// Name capture the `name` field int CF application manifest
+	Name string `json:"name"`
+	// Labels capture the labels as defined in the `annotations` field in the CF application manifest
+	Labels map[string]string `json:"labels,omitempty"`
+	// Annotations capture the annotations as defined in the `labels` field in the CF application manifest
 	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
@@ -71,6 +77,7 @@ type Processes []Process
 // Process represents the abstraction of the specification of a Cloud Foundry Process.
 // For more information check https://docs.cloudfoundry.org/devguide/deploy-apps/manifest-attributes.html#processes
 type Process struct {
+	// Type captures the `type` field in the Process specification. Accepted values are `web` or `worker`
 	Type ProcessType `json:"type,omitempty"`
 	// Name represents the name of the process.
 	Name string `json:"name"`
@@ -107,9 +114,12 @@ type Probe struct {
 	Interval uint `json:"interval"`
 }
 
+// ProcessType captures the CF process types as defined by the CF v3 Application manifest
 type ProcessType string
 
 const (
-	Web    ProcessType = "web"
+	// Web represents a `web` application type
+	Web ProcessType = "web"
+	// Worker represents a `worker` application type
 	Worker ProcessType = "worker"
 )
