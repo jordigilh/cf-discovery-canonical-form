@@ -14,6 +14,11 @@ type Application struct {
 	// Stack represents the `stack` field in the application manifest. The value is captured for information
 	// purposes because it has no relevance in Kubernetes.
 	Stack string `json:"stack,omitempty"`
+	// StartupTimeout captures the maximum elapsed time in which an application that is starting is considered to have failed to respond to checks.
+	// An application has to respond to a readiness or health check before the timeout time elapses or else the platform will
+	// fail the deployment of the application. By default its 60 seconds.
+	// https://github.com/cloudfoundry/docs-dev-guide/blob/96f19d9d67f52ac7418c147d5ddaa79c957eec34/deploy-apps/large-app-deploy.html.md.erb#L35
+	StartupTimeout uint `json:"startupTimeout,omitempty"`
 }
 
 // Metadata captures the name, labels and annotations in the application
