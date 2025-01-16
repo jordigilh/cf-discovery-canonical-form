@@ -71,6 +71,7 @@ type Processes []Process
 // Process represents the abstraction of the specification of a Cloud Foundry Process.
 // For more information check https://docs.cloudfoundry.org/devguide/deploy-apps/manifest-attributes.html#processes
 type Process struct {
+	Type ProcessType `json:"type,omitempty"`
 	// Name represents the name of the process.
 	Name string `json:"name"`
 	// Image represents the pull spec of the container image.
@@ -105,3 +106,10 @@ type Probe struct {
 	// Interval represents the number of seconds between probe checks.
 	Interval uint `json:"interval"`
 }
+
+type ProcessType string
+
+const (
+	Web    ProcessType = "web"
+	Worker ProcessType = "worker"
+)
