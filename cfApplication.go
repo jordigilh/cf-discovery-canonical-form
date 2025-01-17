@@ -8,7 +8,7 @@ type Application struct {
 	Services  Services          `json:"services,omitempty"`
 	Processes Processes         `json:"processes,omitempty"`
 
-	Sidecars Processes `json:"sidecars,omitempty"`
+	Sidecars Sidecars `json:"sidecars,omitempty"`
 	// Instances configures the number of Cloud Foundry application instances.
 	Instances uint `json:"instances"`
 	// Stack represents the `stack` field in the application manifest. The value is captured for information
@@ -101,6 +101,22 @@ type Process struct {
 	LogRateLimit string `json:"logRateLimit,omitempty"`
 }
 
+type Sidecars []Sidecar
+
+// Sidecar captures the information of a Sidecar process
+// https://docs.cloudfoundry.org/devguide/deploy-apps/manifest-attributes.html#sidecars
+type Sidecar struct {
+	// Name represents the name of the Sidecar
+	Name string `json:"name"`
+	// ProcessTypes captures the different process types defined for the sidecar.
+	// Compared to a Process, which has only one type, sidecar processes can accumulate more than one type.
+	ProcessTypes ProcessTypes `json:"processTypes"`
+	// Command captures the command to use to run the sidecar
+	Command []string `json:"command"`
+	// Memory represents the amount of memory to allocate to the sidecar. It's an optional field.
+	Memory string `json:"memory,omitempty"`
+}
+
 // Probe captures the fields for managing health checks. For more information check https://docs.cloudfoundry.org/devguide/deploy-apps/healthchecks.html
 type Probe struct {
 	// Endpoint represents the URL location where to perform the probe check.
@@ -111,6 +127,8 @@ type Probe struct {
 	// Interval represents the number of seconds between probe checks.
 	Interval uint `json:"interval"`
 }
+
+type ProcessTypes []ProcessType
 
 type ProcessType string
 
