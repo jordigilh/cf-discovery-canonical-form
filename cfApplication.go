@@ -106,10 +106,15 @@ type Sidecars []Sidecar
 // Sidecar captures the information of a Sidecar process
 // https://docs.cloudfoundry.org/devguide/deploy-apps/manifest-attributes.html#sidecars
 type Sidecar struct {
-	Name         string       `json:"name"`
+	// Name represents the name of the Sidecar
+	Name string `json:"name"`
+	// ProcessTypes captures the different process types defined for the sidecar.
+	// Compared to a Process, which has only one type, sidecar processes can accumulate more than one type.
 	ProcessTypes ProcessTypes `json:"processTypes"`
-	Command      []string     `json:"command"`
-	Memory       string       `json:"memory,omitempty"`
+	// Command captures the command to use to run the sidecar
+	Command []string `json:"command"`
+	// Memory represents the amount of memory to allocate to the sidecar. It's an optional field.
+	Memory string `json:"memory,omitempty"`
 }
 
 // Probe captures the fields for managing health checks. For more information check https://docs.cloudfoundry.org/devguide/deploy-apps/healthchecks.html
