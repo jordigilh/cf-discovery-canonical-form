@@ -31,6 +31,9 @@ type Application struct {
 type Metadata struct {
 	// Name capture the `name` field int CF application manifest
 	Name string `json:"name"`
+	// Space captures the `space` where the CF application is deployed at runtime. The field is empty if the
+	// application is discovered directly from the CF manifest. It is equivalent to a Namespace in Kubernetes.
+	Space string `json:"space,omitempty"`
 	// Labels capture the labels as defined in the `annotations` field in the CF application manifest
 	Labels map[string]string `json:"labels,omitempty"`
 	// Annotations capture the annotations as defined in the `labels` field in the CF application manifest
@@ -40,21 +43,28 @@ type Metadata struct {
 // Routes represents a slice of Routes
 type Routes []Route
 
-// Route captures the key elements that define a Route: fqdn, protocol and port. These values
+// Route captures the key elements that define a Route in a string that maps to a URL structure. These values
 // are captured as runtime routes, meaning that if the CF Application manifest is configured to disable all routes
 // with the `no-route` value, it will translate into an empty slice.
 // By default CloudFoundry will always attempt to create a route for each application, unless specified by the field `no-route` when true
 // For further details check: https://docs.cloudfoundry.org/devguide/deploy-apps/manifest-attributes.html#no-route
 // and https://docs.cloudfoundry.org/devguide/deploy-apps/manifest-attributes.html#random-route
+// Example
+// ---
+//
+//	...
+//	routes:
+//	- route: example.com
+//	  protocol: http2
+//	- route: www.example.com/foo
+//	- route: tcp-example.com:1234
 type Route struct {
-	// FQDN captures the Fully Qualified Domain Name of the hostname field in the route. If the hostname contained a port
+	// URL captures the Fully Qualified Domain Name of the hostname field in the route. If the hostname contained a port
 	// its value it captured in the `Port` field in the Route structure.
-	FQDN string `json:"fqdn"`
-	// Protocol captures the protocol type: http, http2 or tcp.
+	URL string `json:"url"`
+	// Protocol captures the protocol type: http, http2 or tcp. Note that the CF `protocol` field is only available
+	// for CF deployments that use HTTP/2 routing.
 	Protocol RouteProtocol `json:"protocol"`
-	// Port captures the port to use for the route. For RouteProtocol `http`` it is 80; for `http2` it's 443,
-	// and for `tcp` it is as defined in the CF application manifest.
-	Port uint `json:"port"`
 }
 
 type RouteProtocol string
@@ -68,7 +78,21 @@ const (
 // Services represents a slice of Service
 type Services []Service
 
-// Service contains the specification for an existing Cloud Foundry service required by the application
+// Service contains the specification for an existing Cloud Foundry service required by the application.
+// Examples:
+// ---
+//
+//	...
+//	services:
+//	  - service-1
+//	  - name: service-2
+//	  - name: service-3
+//	    parameters:
+//	      key-1: value-1
+//	      key-2: [value-2, value-3]
+//	      key-3: ... any other kind of value ...
+//	  - name: service-4
+//	    binding_name: binding-1
 type Service struct {
 	// Name represents the name of the Cloud Foundry service required by the application. This field
 	// represents the runtime name of the service, captured from the 3 different cases where
