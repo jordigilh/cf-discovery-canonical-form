@@ -59,8 +59,7 @@ type Routes []Route
 //	- route: www.example.com/foo
 //	- route: tcp-example.com:1234
 type Route struct {
-	// URL captures the Fully Qualified Domain Name of the hostname field in the route. If the hostname contained a port
-	// its value it captured in the `Port` field in the Route structure.
+	// URL captures the FQDN, path and port of the route.
 	URL string `json:"url"`
 	// Protocol captures the protocol type: http, http2 or tcp. Note that the CF `protocol` field is only available
 	// for CF deployments that use HTTP/2 routing.
