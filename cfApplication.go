@@ -46,7 +46,7 @@ type Routes []Route
 // Route captures the key elements that define a Route in a string that maps to a URL structure. These values
 // are captured as runtime routes, meaning that if the CF Application manifest is configured to disable all routes
 // with the `no-route` value, it will translate into an empty slice.
-// By default CloudFoundry will always attempt to create a route for each application, unless specified by the field `no-route` when true
+// By default Cloud Foundry attempts to create a route for each application unless the `no-route` field is set to true.
 // For further details check: https://docs.cloudfoundry.org/devguide/deploy-apps/manifest-attributes.html#no-route
 // and https://docs.cloudfoundry.org/devguide/deploy-apps/manifest-attributes.html#random-route
 // Example
