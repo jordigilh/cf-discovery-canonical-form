@@ -7,7 +7,7 @@ type Application struct {
 	Metadata Metadata `json:",inline"`
 	// Env captures the `env` field values in the CF application manifest.
 	Env map[string]string `json:"env,omitempty"`
-	// Routes represent the routes that are made available by the .
+	// Routes represent the routes that are made available by the application.
 	Routes Routes `json:"routes,omitempty"`
 	// Services captures the `services` field values in the CF application manifest.
 	Services Services `json:"services,omitempty"`
