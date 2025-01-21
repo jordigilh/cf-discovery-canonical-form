@@ -3,7 +3,7 @@ package main
 // Application represents an interpretation of a runtime Cloud Foundry application. This structure differs in that
 // the information it contains has been processed to simplify its transformation to a Kubernetes manifest using MTA
 type Application struct {
-	// Metadata captures the name, labels and annotations in the application
+	// Metadata captures the name, labels and annotations in the application.
 	Metadata Metadata `json:",inline"`
 	// Env captures the `env` field values in the CF application manifest.
 	Env map[string]string `json:"env,omitempty"`
